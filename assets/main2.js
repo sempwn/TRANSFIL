@@ -373,7 +373,7 @@
           $('#multiSimLoading').hide();
           $('#rounds-progress-bar').hide();
 
-          $('#termsModal').modal();
+          $('#termsModal').modal({show: true});
 
 
        });
