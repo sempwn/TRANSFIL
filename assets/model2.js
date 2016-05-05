@@ -13,7 +13,7 @@ function Person(a,b) {
 
     //}
 
-    
+
     this.repRate = function(){
       if (params.nu == 0){
 
@@ -22,25 +22,25 @@ function Person(a,b) {
         } else {
           return 0.0;
         }
-       
+
       } else {
         return params.alpha * Math.min(this.WF ,(1/params.nu) * this.WM);
       }
     }
-    
+
     this.biteRate = function(){
         if (this.a < 108.0){ //less than 9 * 12 = 108.0
-            return this.a/108.0; 
+            return this.a/108.0;
         }  else {
-            return 1.0;  
+            return 1.0;
         }
     }
 
     this.react = function(){
           var bNReduction = 1 - (1-params.sN) * this.bedNet;
           //immune state update
-          
-          //I +=  (param->dt) *( (double) W - param->z * I);  
+
+          //I +=  (param->dt) *( (double) W - param->z * I);
           this.I = immuneRK4Step(this.W , this.I);
           //male worm update
           var births = poisson(0.5 * bNReduction * params.xi  * this.biteRate() * params.L3 * Math.exp(-1 * params.theta * this.I) * this.b *  params.dt); //exp(-1 * beta * I)
@@ -72,15 +72,15 @@ function Person(a,b) {
           if (this.I < 0){ this.I = 0.0; }
           if (this.M < 0){ this.M = 0.0; }
           //simulate event where host dies and is replaced by a new host.
-          if (Math.random() < (1 - Math.exp(-1 * params.tau * params.dt) ) || this.a>1200.0){ //if over age 100 
+          if (Math.random() < (1 - Math.exp(-1 * params.tau * params.dt) ) || this.a>1200.0){ //if over age 100
             this.initialise();
             this.a = 0; //birth event so age is 0.
-            
+
           }
       }
 
     this.initialise = function(){
-  
+
       this.W = 0;
       this.WM = 0;
       this.WF = 0;
@@ -94,7 +94,7 @@ function Person(a,b) {
 
 function Model(n){
     //constructor(n){
-           
+
         this.sU=0;
         this.sB=0;
         this.sN = 0;
@@ -117,20 +117,20 @@ function Model(n){
         this.Ws.push(wp*100);
         this.Ls.push(lp*100);
     }
-    
+
     this.L3 = function(){
       var mf = 0.0;
       var bTot = 0.0;
       for(var i=0; i < this.n; i++){
-        //mf += param->kappas1 * pow(1 - exp(-param->r1 *( host_pop[i].mfConc() * host_pop[i].b)/param->kappas1), 2.0);  
+        //mf += param->kappas1 * pow(1 - exp(-param->r1 *( host_pop[i].mfConc() * host_pop[i].b)/param->kappas1), 2.0);
         mf += this.people[i].b * L3Uptake(this.people[i].M);
         bTot += this.people[i].b;
       }
       mf = mf / bTot; //(double) n;
       return mf * (1 + this.bedNetInt * params.covN * (params.sN - 1)) * params.lbda * params.g /(params.sig + params.lbda * params.psi1);
-      
+
     }
-    
+
 
     this.prevalence = function(){
         var p = 0;
@@ -152,8 +152,8 @@ function Model(n){
         for(var i = 0; i<this.n; i++){
           if (s.random()<params.covMDA){    //param->uniform_dist()<param->covMDA
             this.people[i].M = params.mfPropMDA * this.people[i].M;
-            this.people[i].WM = Math.floor(params.wPropMDA * this.people[i].WM ); 
-            this.people[i].WF = Math.floor(params.wPropMDA * this.people[i].WF ); 
+            this.people[i].WM = Math.floor(params.wPropMDA * this.people[i].WM );
+            this.people[i].WF = Math.floor(params.wPropMDA * this.people[i].WF );
           }
         }
     }
@@ -182,12 +182,25 @@ function Model(n){
         return Math.floor(2*this.ts[inds[0]]);
       }
     }
-    
+
+    this.reduction = function(yr){
+      var myr = yr*6;
+      return this.Ms[myr]/this.Ms[0];
+    }
+
+    this.reductionYears = function(){
+      var ryrs = [];
+      for (var yr=0;yr<20;yr++){
+        ryrs.push( this.reduction(yr) );
+      }
+      return ryrs;
+    }
+
     this.evolveAndSaves = function(tot_t){
         var t = 0;
         var icount = 0;
         var maxMDAt = 1200.0;
-        var maxoldMDAt; //used in triple drug treatment. 
+        var maxoldMDAt; //used in triple drug treatment.
         this.bedNetInt = 0;
 
         for(var i =0; i < this.n; i++){ //infect everyone initially.
@@ -216,19 +229,19 @@ function Model(n){
               this.people[i].react();
             }
             //update
-            t = this.people[0].t; 
+            t = this.people[0].t;
             if (t < 12.0 * 80.0){
                 params.L3 = 2.0;
             } else {
-                params.L3 = this.L3(); 
-            } 
+                params.L3 = this.L3();
+            }
             if((t % 2 == 0) && (t < Math.floor(t) +params.dt)){
                   //cout << "t = " << (double) t/12.0 << "\n";
                   this.saveOngoing(t/12.0,this.prevalence(),this.aPrevalence(),params.L3);
-            }  
+            }
             if ( (Math.floor(t) % Math.floor(tot_t * 12.0/10.0) == 0) && (t < Math.floor(t) + params.dt)){ //every 10% of time run.
-              console.log("-");  
-              $( "#test1" ).append( ' p : ' + this.prevalence() + ' t : ' + t/12.0 );  
+              console.log("-");
+              $( "#test1" ).append( ' p : ' + this.prevalence() + ' t : ' + t/12.0 );
             }
             if (t>=1200.0 && t < 1200.0 +params.dt){ //events that occur at start of treatment after 100 years.
               console.log("bednet event at ", t);
@@ -242,7 +255,7 @@ function Model(n){
               //  params.wPropMDA = (1-params.IDAtau);//0.0;
               //}
               if( (t>1200.0) && (t<= maxMDAt) ){ //if after one hundred years and less than 125 years.
-                    this.MDAEvent();  
+                    this.MDAEvent();
 
                     setBR(true); //intervention true.
                     setVH(true);
@@ -252,7 +265,7 @@ function Model(n){
                     setVH(false);
                     setMu(false);
               }
- 
+
             }
             icount++;
           }
@@ -263,7 +276,7 @@ function Model(n){
           this.ts = math.subtract(this.ts.slice(200,this.ts.length),maxt);
           //plot(this.ts,this.Ws,this.Ms,this.Ls);
         }
-        
+
 
 }
 
@@ -282,7 +295,7 @@ L3Uptake = function(mf){
   }
   else
   {
-    return params.kappas1 * ( 1 - Math.exp(-r1 *( mf )/params.kappas1) );
+    return params.kappas1 * ( 1 - Math.exp(- params.r1 *( mf )/params.kappas1) );
   }
 }
 
@@ -294,12 +307,12 @@ poisson = function(mean){
     var L = Math.exp(-mean);
     var p = 1.0;
     var k = 0;
- 
+
     do {
         k++;
         p *= Math.random();
     } while (p > L);
- 
+
     return (k - 1);
 
 }
@@ -326,38 +339,38 @@ setVH = function(intervention){
 
 setMu = function(intervention){
   if (intervention){
-    params.sig = params.sigR; //increase mortality due to bed nets. dN = 0.41 death rate 
+    params.sig = params.sigR; //increase mortality due to bed nets. dN = 0.41 death rate
   } else {
     params.sig = params.sig_original;
-  }  
+  }
 }
 
 
 //var params = [];
 var params = {
-    riskMu1 : 1.0, 
+    riskMu1 : 1.0,
     riskMu2 : 1.0 ,
-    riskMu3 : 1.0 , 
+    riskMu3 : 1.0 ,
     shapeRisk : 0.065, //shape parameter for bite-risk distribution (0.1/0.065)
     mu : 0.0104, //death rate of worms
     theta : 0.0 , //0.001 //immune system response parameter. 0.112
     gamma : 0.1   , //mf death rate
     alpha : 0.58  , //mf birth rate per fertile worm per 20 uL of blood.
     lbda : 10  , //number of bites per mosquito per month.
-    v_to_h : 9.0  ,  //vector to host ratio (39.,60.,120.) 
+    v_to_h : 9.0  ,  //vector to host ratio (39.,60.,120.)
     kappas1 : 4.395  , //vector uptake and development anophelene
     r1 : 0.055  , //vector uptake and development anophelene
     tau : 0.00167 ,  //death rate of population
     z : 0.0  ,  //waning immunity
-    nu : 0.0  ,  //poly-monogamy parameter       
+    nu : 0.0  ,  //poly-monogamy parameter
     L3 : 0.0  ,  //larvae density.
     g : 0.37  , //Proportion of mosquitoes which pick up infection when biting an infected host
     sig : 5.0  , //death rate of mosquitos
     psi1 : 0.414  , //Proportion of L3 leaving mosquito per bite
     psi2 : 0.32  , //Proportion of L3 leaving mosquito that enter host
-    dt : 1.0  , //time spacing (months) 
+    dt : 1.0  , //time spacing (months)
     lbdaR : 1.0  , //use of bed-net leading to reduction in bite rate
-    v_to_hR : 1.0 , //use of residual-spraying leading to reduction in v_to_h 
+    v_to_hR : 1.0 , //use of residual-spraying leading to reduction in v_to_h
     nMDA : 5  , //number of rounds of MDA
     mdaFreq : 12  , //frequency of MDA (months)
     covMDA : 0.65  , //coverage of MDA
@@ -371,7 +384,7 @@ var params = {
     sigR : 5.0  , //new mortality rate of mosquitoes during vector intervention.
     covN : 0.0  , //coverage of bed nets.
     sysCompN : 0.99  , //systematic non-compliance of bed nets. set to near one.
-    rhoCN : 0.0  , //correlation between receiving chemotherapy and use of bed nets. 
+    rhoCN : 0.0  , //correlation between receiving chemotherapy and use of bed nets.
     IDAControl : 0   //if 1 then programme switches to IDA after five rounds of standard MDA defined with chi and tau.
 };
 
@@ -413,27 +426,35 @@ closest =  function(num, arr) {
 }
 
 setVHFromPrev = function(p,species){
+  /*
   var anVH = [5., 5.55555556, 6.11111111, 6.66666667, 7.22222222, 7.77777778, 8.33333333, 8.88888889, 9.44444444,  10. ],
       cVH = [ 4.,  4.55555556,  5.11111111,  5.66666667,  6.22222222, 6.77777778,  7.33333333,  7.88888889,  8.44444444,  9.],
       anP = [ 0.09405936,  0.09882859,  0.11038997,  0.11982386,  0.12751358, 0.13604286,  0.14459468,  0.15150072,  0.15736517,  0.16302997],
       cP = [ 0.09306863,  0.11225442,  0.1267763 ,  0.13999753,  0.15040748, 0.16114762,  0.16863057,  0.17532108,  0.1827041 ,  0.18676246];
+ */
+  var anVH = [3.66666667,  4.        ,  4.33333333,  4.66666667, 5., 5.55555556, 6.11111111, 6.66666667, 7.22222222, 7.77777778, 8.33333333, 8.88888889, 9.44444444,  10. ],
+      cVH = [ 2.        ,  2.33333333, 2.66666667,  3.        ,  3.33333333,  3.66666667, 4.,  4.55555556,  5.11111111,  5.66666667,  6.22222222, 6.77777778,  7.33333333,  7.88888889,  8.44444444,  9.],
+      anP = [ 0.06232983,  0.08068697,  0.07112745,  0.07718782, 0.09405936,  0.09882859,  0.11038997,  0.11982386,  0.12751358, 0.13604286,  0.14459468,  0.15150072,  0.15736517,  0.16302997],
+      cP = [ 0.0472584 ,  0.05289496, 0.05937815,  0.06394662,  0.0715854 ,  0.08006637, 0.09306863,  0.11225442,  0.1267763 ,  0.13999753,  0.15040748, 0.16114762,  0.16863057,  0.17532108,  0.1827041 ,  0.18676246];
+  var vhs,prevs;
   if(species === 0){
-    var vhs = anVH;
-    var prevs = anP;
+    vhs = anVH;
+    prevs = anP;
   }else{
-    var vhs = cVH;
-    var prevs = cP;
+    vhs = cVH;
+    prevs = cP;
   }
 
   i = closest(p,prevs);
   return vhs[i];
 }
 
-setInputParams = function(){
+setInputParams = function(dict){
     ps = modelParams();
-    params.nMDA = Number(ps.mda);
+    params.inputs = ps;
+    params.nMDA = (dict && dict.nMDA) ? dict.nMDA : Number(ps.mda);
     params.mdaFreq = (ps.mdaSixMonths==="True")? 6.0:12.0;
-    var end = ps.endemicity/100;
+    var end = (dict && dict.endemicity) ? dict.endemicity/100 : ps.endemicity/100;
     var sps = ps.species;
     params.v_to_h = Number(setVHFromPrev(end,Number(sps))); //Number(ps.endemicity);//
     params.covMDA = Number(ps.coverage/100.0);
@@ -447,7 +468,7 @@ setInputParams = function(){
     params.rhoBComp = Number(ps.rhoBComp);
     params.rhoCN = Number(ps.rhoCN);
     params.species = Number(ps.species);
-
+    params.mosquitoSpecies = params.species;
     //calculate other parameters for params
     if (params.species == 0){
       params.shapeRisk = 0.065;
@@ -473,7 +494,7 @@ plot = function(tx,wM,mfM,lM){
                           worm_burden: 'tx',
                           mf_burden: 'tx',
                           L3: 'tx'
-                          
+
                         },
                         columns: [
                           tx,

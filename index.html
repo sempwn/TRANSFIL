@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
    <head>
+     <title>TRANSFIL</title>
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
      <link href="./assets/c3/c3.css" rel="stylesheet" type="text/css">
      <link href="./assets/css/bootstrap-slider.css" rel="stylesheet" type="text/css">
@@ -16,12 +17,12 @@
     <script src="./assets/c3/c3.min.js"></script>
       <!-- Plotly.js -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script src="./assets/main2.js"></script> 
+    <script src="./assets/main2.js"></script>
     <script src="./assets/js/sim.js"></script>
-    <script src="./assets/model2.js"></script> 
-    <script src="./assets/js/math.min.js"></script> 
-    <script src="./assets/world.js"></script> 
-    <script src="./assets/js/bootstrap-slider.js"></script> 
+    <script src="./assets/model2.js"></script>
+    <script src="./assets/js/math.min.js"></script>
+    <script src="./assets/world.js"></script>
+    <script src="./assets/js/bootstrap-slider.js"></script>
 
    </head>
    <body>
@@ -56,7 +57,7 @@
                 <li role="presentation"><a id="plus">Add new simulation<span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
               </ul>
             </li>
-          
+
         </ul>
 
         <!-- Tab panes -->
@@ -74,7 +75,7 @@
             <div class="row">
 
               <div class="col-md-4 col-md-offset-2">
-                
+
                 <div id="world_map">
                   <h1 class="text-center" style="display:none;"></h1>
                   <div class="form-group">
@@ -88,13 +89,13 @@
 
                 <h4 class="text-center">National Programme Status</h4>
                 <table class="table table-striped">
-                  <tr> 
+                  <tr>
                       <td>Country</td>
                       <td>MDA type</td>
                       <td>MDA National Coverage</td>
                   </tr>
                   <tr>
-                    
+
                     <td id="country-name-form"></td>
                     <td id="mda-form"></td>
                     <td id="coverage-form"></td>
@@ -130,7 +131,7 @@
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                       <div class="panel-body">
-                       
+
                         <div class="radio">
                           <label class="text-center">
                             <img src="./assets/img/Anopheles.jpg" class="img-responsive img-thumbnail" style="max-width: 250px; max-height: 200px;" alt="Anopheles image">
@@ -145,7 +146,7 @@
                             Culex
                           </label>
                         </div>
-                
+
                       </div>
                     </div>
                   </div>
@@ -163,12 +164,12 @@
                           <div class="form-group">
                             <label for="endemicity" class="col-sm-2">Microfilaraemia prevalence</label>
                             <div class="col-sm-10">
-                              <input id="endemicity" data-slider-id='endemicitySlider' type="text" data-slider-min="9.0" data-slider-max="18.0" data-slider-step="0.5" data-slider-value="10"/>
+                              <input id="endemicity" data-slider-id='endemicitySlider' type="text" data-slider-min="5.0" data-slider-max="18.0" data-slider-step="0.5" data-slider-value="10"/>
                             </div>
                           </div>
                         </div>
                         <p>The mf prevalence in the population before intervention occurs. Due to the stochastic nature of the model this is a prevalence averaged over many independent runs and so should be treated as an approximation only.</p>
-                
+
                       </div>
                     </div>
                   </div>
@@ -206,8 +207,8 @@
                     </div>
                   </div>
                 </div>
-                
-                
+
+
               </div>
           </div>
           <div role="tabpanel" class="tab-pane" id="vector">
@@ -259,8 +260,8 @@
                     </div>
                   </div>
                 </div>
-                
-                
+
+
               </div>
           </div>
 
@@ -272,27 +273,27 @@
                   <div class="form-group">
                     <label for="inputMDARounds">Systematic adherence</label>
                     <div class="input-group">
-                      
+
                       <input id="sysAdherence" data-slider-id='sysAdherenceSlider' type="text" data-slider-min="0" data-slider-max="1.0" data-slider-step="0.1" data-slider-value="0"/>
-                    
+
                     </div>
                   </div>
 
                   <div class="form-group">
                     <label for="inputMDARounds">Bite-risk adherence correlation</label>
                     <div class="input-group">
-                      
+
                       <input id="brMda" data-slider-id='brMdaSlider' type="text" data-slider-min="0" data-slider-max="1.0" data-slider-step="0.1" data-slider-value="0"/>
-                    
+
                     </div>
                   </div>
 
                   <div class="form-group">
                     <label for="inputMDARounds">bed-net and mda adherence correlation</label>
                     <div class="input-group">
-                      
+
                       <input id="bedNetMda" data-slider-id='bedNetMdaSlider' type="text" data-slider-min="0" data-slider-max="1.0" data-slider-step="0.1" data-slider-value="0"/>
-                    
+
                     </div>
                   </div>
                 </form>
@@ -381,9 +382,9 @@
                         <div class="input-group">
                             <input id="Microfilaricide" data-slider-id='MicrofilaricideSlider' type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="65"/>
                         </div>
-                        <small class="text-muted"> 
-                          Use sliders to control the total proportion of microfilariae and adult filariae cleared from an individual who has received a dose of the drug. The macrofilaricidal and microfilaricidal effects are assumed to occur immediately after 
-                          administration. 
+                        <small class="text-muted">
+                          Use sliders to control the total proportion of microfilariae and adult filariae cleared from an individual who has received a dose of the drug. The macrofilaricidal and microfilaricidal effects are assumed to occur immediately after
+                          administration.
                         </small>
                       </div>
                     </div>
@@ -398,7 +399,7 @@
                   For current settings selected calculate the number of rounds required to achieve the
                   target of less than 1&#37; prevalence. Multiple scenarios can be run and compared. In order to do
                   this first select the strategy you would like to consider, select the number of iterations used
-                  to perform the calculation and press the run button. This will produce a boxplot of the number 
+                  to perform the calculation and press the run button. This will produce a boxplot of the number
                   of rounds as well as a summary of the current setting below. To compare to another setting, simply
                   change the parameters in the tabs and press run again, the new setting will be plotted alongside
                   the previously calculated ones. To reset the graph, press the reset button.
@@ -482,18 +483,18 @@
                 <div class="modal-dialog modal-lg">
                   <div class="modal-content">
                     <div class="modal-header">
-                      
+
                       <h4 class="modal-title">Terms &amp; conditions</h4>
                     </div>
                     <div class="modal-body">
                       <p>TRANSFIL &copy; 2016, The University of Warwick (the "Software Model") </p>
- 
-                      <p>The Software Model remains the property of the University of Warwick ("the University").</p> 
+
+                      <p>The Software Model remains the property of the University of Warwick ("the University").</p>
 
                        <p> The Software Model is distributed "AS IS" under this Licence solely for non-commercial use in the hope that it will be useful, but in order that the University as a charitable foundation protects its assets for the benefit of its educational and research purposes, the University makes clear that no condition is made or to be implied, nor is any warranty given or to be implied, as to the accuracy of the Software Model, or that it will be suitable for any particular purpose or for use under any specific conditions. Furthermore, the University disclaims all responsibility for the use which is made of the Software Model. It further disclaims any liability for the outcomes arising from using the Software Model. </p>
 
                       <p>The Licensee agrees to indemnify the University and hold the University harmless from and against any and all claims, damages and liabilities asserted by third parties (including claims for negligence) which arise directly or indirectly from the use of the Software Model.</p>
- 
+
                       <p>No part of the Software Model may be reproduced, modified, transmitted or transferred in any form or by any means, electronic or mechanical, without the express permission of the University. You may be held legally responsible for any copyright infringement that is caused or encouraged by your failure to abide by these terms and conditions. </p>
 
                       <p>You are not permitted under this Licence to use this Software Model commercially. Use for which any financial return is received shall be defined as commercial use, and includes (1) integration of all or part of the source code or the Software Model into a product for sale or license by or on behalf of Licensee to third parties or (2) use of the Software Model or any derivative of it for research with the final aim of developing software products for sale or license to a third party or (3) use of the Software Model or any derivative of it for research with the final aim of developing non-software products for sale or license to a third party, or (4) use of the Software Model to provide any service to an external organisation for which payment is received. If you are interested in using the Software Model commercially, please contact Warwick Ventures Limited("WVL"), the technology transfer company of the University, to negotiate a licence. Contact details are: ventures@warwick.ac.uk quoting reference. If you are in any doubt if your use constitutes commercial use, contact WVL:
@@ -549,7 +550,7 @@
   <div id ="new-alert" style="display: none;">
     <div class="alert alert-dismissible fade in" role="alert">
       <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      
+
     </div>
   </div>
   <div id="new-tab" style="display: none;">
@@ -598,13 +599,13 @@
                     </div>
                     <div class="modal-body">
                       <p>TRANSFIL &copy; 2016, The University of Warwick (the "Software Model") </p>
- 
-                      <p>The Software Model remains the property of the University of Warwick ("the University").</p> 
+
+                      <p>The Software Model remains the property of the University of Warwick ("the University").</p>
 
                        <p> The Software Model is distributed "AS IS" under this Licence solely for non-commercial use in the hope that it will be useful, but in order that the University as a charitable foundation protects its assets for the benefit of its educational and research purposes, the University makes clear that no condition is made or to be implied, nor is any warranty given or to be implied, as to the accuracy of the Software Model, or that it will be suitable for any particular purpose or for use under any specific conditions. Furthermore, the University disclaims all responsibility for the use which is made of the Software Model. It further disclaims any liability for the outcomes arising from using the Software Model. </p>
 
                       <p>The Licensee agrees to indemnify the University and hold the University harmless from and against any and all claims, damages and liabilities asserted by third parties (including claims for negligence) which arise directly or indirectly from the use of the Software Model.</p>
- 
+
                       <p>No part of the Software Model may be reproduced, modified, transmitted or transferred in any form or by any means, electronic or mechanical, without the express permission of the University. You may be held legally responsible for any copyright infringement that is caused or encouraged by your failure to abide by these terms and conditions. </p>
 
                       <p>You are not permitted under this Licence to use this Software Model commercially. Use for which any financial return is received shall be defined as commercial use, and includes (1) integration of all or part of the source code or the Software Model into a product for sale or license by or on behalf of Licensee to third parties or (2) use of the Software Model or any derivative of it for research with the final aim of developing software products for sale or license to a third party or (3) use of the Software Model or any derivative of it for research with the final aim of developing non-software products for sale or license to a third party, or (4) use of the Software Model to provide any service to an external organisation for which payment is received. If you are interested in using the Software Model commercially, please contact Warwick Ventures Limited("WVL"), the technology transfer company of the University, to negotiate a licence. Contact details are: ventures@warwick.ac.uk quoting reference. If you are in any doubt if your use constitutes commercial use, contact WVL:
@@ -618,4 +619,3 @@
 
  </body>
 </html>
-
